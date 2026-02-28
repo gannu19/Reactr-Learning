@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React with Babel</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <!-- React 18 CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Babel CDN -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- JSX Code -->
+     <!---->
+    <script type="text/babel">
+
+
+      function ChatInput({onSend}){
+        return (
+          <>
+          <input placeholder =" Say Something...?" width="30" />
+          <button onClick={onSend}>Send</button>
+          </>
+        )
+      }
+
+//Main logic for rednering the messages and image will appear based on the sender type 
+
+      function ChatMessages(props){
+        const {message, sender:from} = props;
+        return (
+          <div>         
+          {from === "user" && <img src="user.png" width="30" />}
+          {message}
+          { from === "Chatbot" && <img src="chatbot.png" width ="30" />}
+
+          </div>
+        )
+      }
+
+//Function for all the chat messages and if any new message to be added will be added in this function
+      function ChatMessagesList(){    
+        const [MessageList, setMessageList] = React.useState([
+
+          {message:"Hello! How can I help You ?", sender:"Chatbot"},
+          {message:"Hello! Can you get todays date?", sender:"user"},
+          {message:"sure, Today is February 28 ! Is there anything I can help with you!", sender:"Chatbot"},
+          {message:"Can You give me todays day and present temperature?", sender:"user"},
+          {message:"Today is Saturday, weekend so enjoy you day and the temperature is 30 degrees", sender:"Chatbot"},
+          {message:"Thank You!", sender:"user"},
+          {message:"Thankn you! Is there anything that I help with?", sender:"Chatbot"}
+       ]
+      
+        )
+
+        function AddMessage(){
+          const newMsg ={message:"Hello WelcomeBack!", sender:"Chatbot"}
+          setMessageList([...MessageList, newMsg])
+        }
+
+        return (
+          <>
+          <ChatInput onSend={AddMessage} />
+          {
+          MessageList.map((msg)=>(
+            <>          
+            <ChatMessages 
+              message={msg.message}
+              sender={msg.sender}
+            />
+            </>
+          ))
+        }
+
+          </>
+        )
+
+      }
+
+//This will render the final UI 
+      function App(){       
+        return (
+        <>   
+        <ChatMessagesList />
+        </>
+       )
+      }
+
+//creates a container and rendering      
+     const container = document.querySelector('.js-container');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React with Babel</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <!-- React 18 CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Babel CDN -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- JSX Code -->
+     <!---->
+    <script type="text/babel">
+    
+      function ChatInput(){   //this creates a input box for writing a text
+        return (
+          <>   
+            <input placeholder="Send a text to the chatbot" size="30"></input>
+            <button>Send</button>
+          </>
+        );
+      }
+
+
+      function ChatMsge(props){           //this creates a seperate text line and based on sender the image updates
+        const {message:text, sender:from}=props;
+        return (
+              <div>
+                {from === "chatbot" && <img src="chatbot.png" width='30' />}
+                {text}
+                {from ==="user" && <img src="user.png" width='30' />}
+              </div>
+        )
+      }
+
+     function App(){
+
+  const [chatMessages, setChatMessages] = React.useState([
+    {
+      message:"Hello Chatbot",
+      sender: "user",
+      id: crypto.randomUUID()
+    },
+    {
+      message:"Hello! How can I help you?",
+      sender: "chatbot",
+      id: crypto.randomUUID()
+    },
+    {
+      message: "can you get me todays date?",
+      sender:"user",
+      id: crypto.randomUUID()
+    },
+    {
+      message:"Todays date is 27 february",
+      sender: "chatbot",
+      id: crypto.randomUUID()
+    }
+  ]);
+
+  function SendMessage(){
+
+    const newMessage = {
+      message: 'test',
+      sender:'user',
+      id: crypto.randomUUID()
+    };
+
+    setChatMessages([
+      ...chatMessages,
+      newMessage
+    ]);
+  }
+
+  return (
+    <>
+      <button onClick={SendMessage}>Send Message</button>
+
+      <ChatInput />
+
+      {
+        chatMessages.map((msg) => (
+          <ChatMsge
+            key={msg.id}
+            message={msg.message}
+            sender={msg.sender}
+          />
+        ))
+      }
+    </>
+  );
+}
+      
+      const container = document.querySelector('.js-container');
+      const root = ReactDOM.createRoot(container );
+      root.render(<App />);
+      console.log(props);
+    </script>
+    
+  </body>
+</html>
