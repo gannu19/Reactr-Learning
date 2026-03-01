@@ -19,10 +19,23 @@
 
 
       function ChatInput({onSend}){
+        const [inputText, setInputText] = React.useState("")
+
+        function SaveInputText(event){
+          setInputText(event.target.value);
+
+        }
+
+        function sendMessage(){
+         onSend(inputText);
+         setInputText("");
+        }
+
+  
         return (
           <>
-          <input placeholder =" Say Something...?" width="30" />
-          <button onClick={onSend}>Send</button>
+          <input placeholder =" Say Something...?" onChange={SaveInputText} width="30" />
+          <button onClick={sendMessage}>Send</button>
           </>
         )
       }
@@ -56,8 +69,8 @@
       
         )
 
-        function AddMessage(){
-          const newMsg ={message:"Hello WelcomeBack!", sender:"Chatbot"}
+        function AddMessage(text){
+          const newMsg ={message:text, sender:"user"}
           setMessageList([...MessageList, newMsg])
         }
 
@@ -68,6 +81,7 @@
           MessageList.map((msg)=>(
             <>          
             <ChatMessages 
+              key={crypto.randomUUID()}
               message={msg.message}
               sender={msg.sender}
             />
