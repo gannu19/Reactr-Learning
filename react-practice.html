@@ -2,6 +2,69 @@
 <html>
   <head>
     <title>React with Babel</title>
+    <style>
+      body{
+        font-family:Aerial;
+      }
+       .send-button{
+        background-color: green;
+        color:white;
+        padding: 12px 20px;
+        margin-left: 10px;
+        border:none;
+        border-radius:10px;
+        font-size:15px;
+        cursor: pointer;
+      }
+      .input-element{
+        padding:12px 15px;
+        border-radius: 10px;
+        border-width: 1px;
+        font-size: 15px;
+        width:350px;
+
+        flex-grow:1;
+      }
+      .chat-input-container{
+        display: flex;
+      }
+      .App.container{
+        max-width: 600px;
+        margin-left:auto;
+        margin-right:auto;
+      }
+      .chat-message-user{
+        display: flex;
+        justify-content:end ;
+        align-items:start;
+      }
+      .chat-message-text{
+        background-color: rgb(238,238,238);
+        padding:15px 20px;
+        margin-right:10px;
+        margin-right:10px;
+        margin-left:10px;
+        margin-bottom:20px;
+        max-width:300px;
+        border-radius:10px;
+       
+
+      }
+      .chat-message-chatbot{
+        display:flex;
+        border-radius:10px;
+        
+        
+      }
+      .image-user{
+        width:50px;
+
+      }
+      .image-chatbot{
+        width:50px;
+      }
+
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
@@ -19,7 +82,7 @@
 
 
       function ChatInput({onSend}){
-        const [inputText, setInputText] = React.useState("")
+        const [inputText, setInputText] = React.useState("");
 
         function SaveInputText(event){
           setInputText(event.target.value);
@@ -33,10 +96,10 @@
 
   
         return (
-          <>
-          <input placeholder =" Say Something...?" onChange={SaveInputText} width="30" />
-          <button onClick={sendMessage}>Send</button>
-          </>
+          <div className = "chat-input-container">
+          <input placeholder =" Say Something...?" className="input-element" onChange={SaveInputText} width="70" />
+          <button className="send-button" onClick={sendMessage}>Send</button>
+          </div>
         )
       }
 
@@ -46,9 +109,9 @@
         const {message, sender:from} = props;
         return (
           <div>         
-          {from === "user" && <img src="user.png" width="30" />}
-          {message}
-          { from === "Chatbot" && <img src="chatbot.png" width ="30" />}
+          {from === "user" && <img src="user.png" className="image-user" />}
+           <div className="chat-message-text">{message}</div>
+          { from === "Chatbot" && <img src="chatbot.png" className="image-chatbot" />}
 
           </div>
         )
@@ -79,13 +142,13 @@
           <ChatInput onSend={AddMessage} />
           {
           MessageList.map((msg)=>(
-            <>          
+            <div  className={ msg.sender==="user" ? "chat-message-user" : "chat-message-chatbot"}>          
             <ChatMessages 
               key={crypto.randomUUID()}
               message={msg.message}
               sender={msg.sender}
             />
-            </>
+            </div>
           ))
         }
 
@@ -93,13 +156,12 @@
         )
 
       }
-
 //This will render the final UI 
       function App(){       
         return (
-        <>   
+        <div className="App-container">   
         <ChatMessagesList />
-        </>
+        </div>
        )
       }
 
